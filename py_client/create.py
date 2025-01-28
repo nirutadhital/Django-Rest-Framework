@@ -7,7 +7,6 @@ data={
     "price":32.99
 }
 
-get_response=requests.post(endpoint, json=data)  #API f
-
+get_response=requests.post(endpoint, json=data)  
 
 print(get_response.json())
