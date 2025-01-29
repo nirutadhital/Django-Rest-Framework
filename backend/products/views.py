@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins, permissions, authentication
 from .models import Product
 from .serializers import ProductSerializer
 from django.shortcuts import get_object_or_404
@@ -35,6 +35,7 @@ product_detail_view=ProductDetailAPIView.as_view()
 class ProductUpdateAPIView(generics.UpdateAPIView):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
+    permission_classes=[permissions.DjangoModelPermissions]
     #lookuop_field='pk
     lookup_field='pk'
     
@@ -66,6 +67,9 @@ product_destroy_view=ProductDestroyAPIView.as_view()
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
+    # permission_classes=[permissions.IsAuthenticated]
+    authentication_classes=[authentication.SessionAuthentication]
+    permission_classes=[permissions.DjangoModelPermissions]
     
     def perform_create(self, serializer):
         title=serializer.validated_data.get('title')
