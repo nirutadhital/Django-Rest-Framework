@@ -4,6 +4,7 @@ from rest_framework import generics, mixins, permissions, authentication
 from .models import Product
 from .serializers import ProductSerializer
 from django.shortcuts import get_object_or_404
+from .permissions import IsStaffEditorPermission
 # from django.http import Http404
 
 
@@ -18,7 +19,6 @@ class ProductCreateAPIView(generics.CreateAPIView):
         if content is None:
             content=title
         serializer.save(content=content)
-        # send a Django signal
           
 product_create_view=ProductCreateAPIView.as_view()
     
@@ -69,7 +69,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     serializer_class=ProductSerializer
     # permission_classes=[permissions.IsAuthenticated]
     authentication_classes=[authentication.SessionAuthentication]
-    permission_classes=[permissions.DjangoModelPermissions]
+    # permission_classes=[permissions.IsAdminUser, IsStaffEditorPermission]
     
     def perform_create(self, serializer):
         title=serializer.validated_data.get('title')
