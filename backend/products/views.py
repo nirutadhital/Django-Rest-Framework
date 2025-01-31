@@ -37,6 +37,7 @@ class ProductUpdateAPIView(generics.UpdateAPIView):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
     permission_classes=[permissions.DjangoModelPermissions]
+    permission_classes=[permissions.IsAdminUser, IsStaffEditorPermission]
     #lookuop_field='pk
     lookup_field='pk'
     
@@ -51,6 +52,7 @@ product_update_view=ProductUpdateAPIView.as_view()
 class ProductDestroyAPIView(generics.DestroyAPIView):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
+    permission_classes=[permissions.IsAdminUser, IsStaffEditorPermission]
     #lookuop_field='pk
     lookup_field='pk'
     
@@ -68,7 +70,7 @@ product_destroy_view=ProductDestroyAPIView.as_view()
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
-    authentication_classes=[authentication.SessionAuthentication, TokenAuthentication]
+    # authentication_classes=[authentication.SessionAuthentication, TokenAuthentication]
     permission_classes=[permissions.IsAdminUser, IsStaffEditorPermission]
     
     def perform_create(self, serializer):

@@ -27,6 +27,35 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DEFAULT_AUTO_FIELD='django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "api.authentication.TokenAuthentication"
+        ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly"
+    ]
+}
+
+# auth_classes=[
+#     "rest_framework.authentication.SessionAuthentication",
+#     "api.authentication.TokenAuthentication"
+# ]
+# if DEBUG:
+#     auth_classes=[
+#         "api.authentication.TokenAuthentication"
+#     ]
+    
+# REST_FRAMEWORK = {
+#     "DEFAULT_AUTHENTICATION_CLASSES": auth_classes,
+#     "DEFAULT_PERMISSION_CLASSES": [
+#         "rest_framework.permissions.IsAuthenticatedOrReadOnly"
+#     ]
+# }
+
+
 
 # Application definition
 
