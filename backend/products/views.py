@@ -1,11 +1,12 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework import generics, mixins, permissions, authentication
+from rest_framework import generics, mixins #, permissions, authentication
 from .models import Product
 from .serializers import ProductSerializer
 from django.shortcuts import get_object_or_404
 from .permissions import IsStaffEditorPermission
-from api.authentication import TokenAuthentication
+# from api.authentication import TokenAuthentication
+from api.mixins import StaffEditorPermissionMixin
 # from django.http import Http404
 
 
@@ -25,7 +26,7 @@ product_create_view=ProductCreateAPIView.as_view()
     
 
 
-class ProductDetailAPIView(generics.RetrieveAPIView):
+class ProductDetailAPIView(StaffEditorPermissionMixin,generics.RetrieveAPIView):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
     #lookuop_field='pk
@@ -33,11 +34,11 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
 product_detail_view=ProductDetailAPIView.as_view()
 
 
-class ProductUpdateAPIView(generics.UpdateAPIView):
+class ProductUpdateAPIView(StaffEditorPermissionMixin,generics.UpdateAPIView):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
-    permission_classes=[permissions.DjangoModelPermissions]
-    permission_classes=[permissions.IsAdminUser, IsStaffEditorPermission]
+    # permission_classes=[permissions.DjangoModelPermissions]
+    # permission_classes=[permissions.IsAdminUser, IsStaffEditorPermission]
     #lookuop_field='pk
     lookup_field='pk'
     
@@ -49,10 +50,10 @@ class ProductUpdateAPIView(generics.UpdateAPIView):
 product_update_view=ProductUpdateAPIView.as_view()
 
 
-class ProductDestroyAPIView(generics.DestroyAPIView):
+class ProductDestroyAPIView(StaffEditorPermissionMixin,generics.DestroyAPIView):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
-    permission_classes=[permissions.IsAdminUser, IsStaffEditorPermission]
+    # permission_classes=[permissions.IsAdminUser, IsStaffEditorPermission]
     #lookuop_field='pk
     lookup_field='pk'
     
@@ -67,11 +68,12 @@ product_destroy_view=ProductDestroyAPIView.as_view()
 # Listing objects: It allows you to retrieve a list of all objects from a queryset.
 # Creating objects: It allows you to create a new object in the database.
 # It is a combination of ListAPIView and CreateAPIView.
-class ProductListCreateAPIView(generics.ListCreateAPIView):
+class ProductListCreateAPIView(StaffEditorPermissionMixin,generics.ListCreateAPIView):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
     # authentication_classes=[authentication.SessionAuthentication, TokenAuthentication]
-    permission_classes=[permissions.IsAdminUser, IsStaffEditorPermission]
+    # permission_classes=[permissions.IsAdminUser, IsStaffEditorPermission]
+    
     
     def perform_create(self, serializer):
         title=serializer.validated_data.get('title')

@@ -1,3 +1,4 @@
+# //this file is not needed after we place permissions.py inside api
 from rest_framework import permissions
 class IsStaffEditorPermission(permissions.DjangoModelPermissions):
     perms_map = {
