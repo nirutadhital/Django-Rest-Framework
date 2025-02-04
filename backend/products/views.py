@@ -6,7 +6,7 @@ from .serializers import ProductSerializer
 from django.shortcuts import get_object_or_404
 from .permissions import IsStaffEditorPermission
 # from api.authentication import TokenAuthentication
-from api.mixins import StaffEditorPermissionMixin
+from api.mixins import (StaffEditorPermissionMixin, UserQuerySetMixin)
 # from django.http import Http404
 
 
@@ -26,7 +26,7 @@ product_create_view=ProductCreateAPIView.as_view()
     
 
 
-class ProductDetailAPIView(StaffEditorPermissionMixin,generics.RetrieveAPIView):
+class ProductDetailAPIView(UserQuerySetMixin,StaffEditorPermissionMixin,generics.RetrieveAPIView):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
     #lookuop_field='pk
@@ -34,7 +34,7 @@ class ProductDetailAPIView(StaffEditorPermissionMixin,generics.RetrieveAPIView):
 product_detail_view=ProductDetailAPIView.as_view()
 
 
-class ProductUpdateAPIView(StaffEditorPermissionMixin,generics.UpdateAPIView):
+class ProductUpdateAPIView(UserQuerySetMixin,StaffEditorPermissionMixin,generics.UpdateAPIView):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
     # permission_classes=[permissions.DjangoModelPermissions]
@@ -50,7 +50,7 @@ class ProductUpdateAPIView(StaffEditorPermissionMixin,generics.UpdateAPIView):
 product_update_view=ProductUpdateAPIView.as_view()
 
 
-class ProductDestroyAPIView(StaffEditorPermissionMixin,generics.DestroyAPIView):
+class ProductDestroyAPIView(UserQuerySetMixin,StaffEditorPermissionMixin,generics.DestroyAPIView):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
     # permission_classes=[permissions.IsAdminUser, IsStaffEditorPermission]
@@ -68,7 +68,7 @@ product_destroy_view=ProductDestroyAPIView.as_view()
 # Listing objects: It allows you to retrieve a list of all objects from a queryset.
 # Creating objects: It allows you to create a new object in the database.
 # It is a combination of ListAPIView and CreateAPIView.
-class ProductListCreateAPIView(StaffEditorPermissionMixin,generics.ListCreateAPIView):
+class ProductListCreateAPIView(UserQuerySetMixin,StaffEditorPermissionMixin,generics.ListCreateAPIView):
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
     # authentication_classes=[authentication.SessionAuthentication, TokenAuthentication]
@@ -82,8 +82,17 @@ class ProductListCreateAPIView(StaffEditorPermissionMixin,generics.ListCreateAPI
         content=serializer.validated_data.get('content') or None
         if content is None:
             content=title
-        serializer.save(content=content)
+        serializer.save(user=self.request.user,content=content)
         
+        
+    # def get_queryset(self, *args, **kwargs):
+    #     qs = super().get_queryset(*args, **kwargs)
+    #     request = self.request
+    #     user = request.user
+    #     if not user.is_authenticated:
+    #         return Product.objects.none()
+    #     # print(request.user)
+    #     return qs.filter(user=request.user)
     
 product_list_create_view=ProductListCreateAPIView.as_view()
 
