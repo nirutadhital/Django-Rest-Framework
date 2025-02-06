@@ -8,6 +8,8 @@ from .permissions import IsStaffEditorPermission
 # from api.authentication import TokenAuthentication
 from api.mixins import (StaffEditorPermissionMixin, UserQuerySetMixin)
 # from django.http import Http404
+from .custompagination import CustomLimitOffsetPagination
+
 
 
 
@@ -73,6 +75,7 @@ class ProductListCreateAPIView(UserQuerySetMixin,StaffEditorPermissionMixin,gene
     serializer_class=ProductSerializer
     # authentication_classes=[authentication.SessionAuthentication, TokenAuthentication]
     # permission_classes=[permissions.IsAdminUser, IsStaffEditorPermission]
+    pagination_class=CustomLimitOffsetPagination
     
     
     def perform_create(self, serializer):
