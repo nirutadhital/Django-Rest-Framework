@@ -68,8 +68,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #third party api services
+    'algoliasearch_django',
+    #third party packages
     'rest_framework',
     'rest_framework.authtoken',
+    #internal apps
     'api',
     'products',
     'search',
@@ -157,3 +161,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#environment variables -> django dotenv--reads.env
+ALGOLIA = {
+    'APPLICATION_ID': 'XWY29V7780',
+    'API_KEY': '9c60ff1503395cccc8c262c8c3b88d2f',
+    'INDEX_PREFIX':'cfe'
+}
+

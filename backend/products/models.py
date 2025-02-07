@@ -39,6 +39,9 @@ class Product(models.Model):
     objects= ProductManager()
     
     
+    def is_public(self)->bool:
+        return self.public #True or False
+    
     @property
     def sale_price(self):
         return "%.2f" %(float(self.price)*0.8)
