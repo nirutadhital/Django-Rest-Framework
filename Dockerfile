@@ -1,13 +1,15 @@
 FROM python:3.12
 
-WORKDIR /app
+WORKDIR /backend
 
-COPY . .
+COPY backend/ /backend/
+
+COPY requirements.txt /backend/
 
 RUN pip install --no-cache-dir -r requirements.txt
 #requirements.txt
 
-EXPOSE 4000
+EXPOSE 8000
 CMD [ "python", "manage.py", "runserver" ]
 
 
