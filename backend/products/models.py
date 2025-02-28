@@ -2,7 +2,6 @@ from django.db import models
 from django.conf import settings
 from django.db.models import Q
 
-
 User=settings.AUTH_USER_MODEL#auth.User
 
 class ProductQuerySet(models.QuerySet):
